@@ -47,6 +47,7 @@ private:
 
 	GLuint m_ParticleCloudVBO = 0;
 	GLuint m_ParticleCloudVertexCount = 0;
+	GLuint m_ParticleCloudShader = 0;
 
 	GLuint m_SolidRectShader = 0;
 };

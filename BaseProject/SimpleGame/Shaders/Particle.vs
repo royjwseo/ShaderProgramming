@@ -53,10 +53,30 @@ void Parabola(){
 	gl_Position=newPosition;
 }
 
-void Triangle(){
-	
+void Triangle() {
+    // 시간을 주기로 나누어 제한합니다.
+    float newTime = fract(u_Time / u_Period);
+    float t = newTime;
+    float tt = t * t;
 
+    vec4 newPosition;
+    
+
+        // 삼각형의 각 꼭지점에 대해 파라볼라 운동을 적용합니다.
+        float transX = (a_Position.x + c_StartPos.x) + c_ParaVelocity.x * newTime +
+                       0.5 * c_2DGravity.x * tt;
+        float transY = (a_Position.y + c_StartPos.y) + c_ParaVelocity.y * newTime +
+                       0.5 * c_2DGravity.y * tt;
+
+        // 새로운 위치를 저장합니다.
+        newPosition.xy = vec2(transX, transY);
+        newPosition.zw = vec2(0, 1);
+        
+        // 삼각형의 각 정점의 새로운 위치를 출력합니다.
+        gl_Position = newPosition;
+    
 }
+
 
 
 void Basic(){
@@ -71,5 +91,6 @@ void main()
 	//Line();
 	//Circle();
 	//Parabola();
-	Basic();
+	//Basic();
+	Triangle();
 }
