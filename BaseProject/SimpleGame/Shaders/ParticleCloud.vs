@@ -16,6 +16,8 @@ const float c_PI=3.141592;
 
 uniform float u_Time=0;
 uniform float u_Period=2.0;
+uniform vec2 u_WindAcc=vec2(0,0);
+uniform vec2 u_AttractPos=vec2(0,0);
 
 void Line(){
 	float newTime= abs(fract(u_Time/u_Period)-0.5)*2.0; //abs(fract)방식 알기.
@@ -117,6 +119,68 @@ void CircleEffect(){
 	gl_Position= newPosition;
 }
 
+void CircleEffectCycle(){
+	float t= u_Time-a_StartTime;
+	float amp=a_Amp;
+	float period=a_Period;
+	vec4 newPosition = vec4(a_Position,1);
+	//t= a_LifeTime* fract(t/a_LifeTime);
+	
+
+	if(t>0){
+	t= a_LifeTime* fract(t/a_LifeTime);	 //생존 주기 반복을 위한 필수 식.
+		float tt=t*t;
+	
+		float value= a_StartTime*2.0*c_PI;
+		float a= cos(value);
+		float b=sin(value);
+		newPosition.xy=newPosition.xy+vec2(a,b);
+
+		vec2 newVel = a_Velocity.xy+c_2DGravity*t;
+		vec2 newDir= vec2(-newVel.y,newVel.x);
+		newDir=normalize(newDir);
+		newPosition.xy= newPosition.xy+ a_Velocity.xy *t+0.5*c_2DGravity*tt;
+		newPosition.xy= newPosition.xy+newDir*(t*0.1)*sin(t*c_PI*period)*amp;
+	}
+	else{
+		newPosition.x= 10000000;
+	}
+	gl_Position= newPosition;
+}
+
+
+void HeartEffectCycle(){
+	float t= u_Time-a_StartTime;
+	float amp=a_Amp;
+	float period=a_Period;
+	vec4 newPosition = vec4(a_Position,1);
+	//t= a_LifeTime* fract(t/a_LifeTime);
+	
+
+	if(t>0){
+	t= a_LifeTime* fract(t/a_LifeTime);	 //생존 주기 반복을 위한 필수 식.
+		float tt=t*t;
+	
+		float value= a_StartTime*2.0*c_PI;
+		float a= 16*pow(sin(value),3);
+		float b=13*cos(value)-5*cos(2*value)-2*cos(3*value)-cos(4*value);
+		a*=0.05;
+		b*=0.05;
+		newPosition.xy=newPosition.xy+vec2(a,b);
+
+		vec2 newVel = a_Velocity.xy+c_2DGravity*t;
+		vec2 newDir= vec2(-newVel.y,newVel.x);
+		newDir=normalize(newDir);
+		newPosition.xy= newPosition.xy+ a_Velocity.xy *t+0.5*c_2DGravity*tt;
+		newPosition.xy= newPosition.xy+newDir*(t*0.1)*sin(t*c_PI*period)*amp;
+	}
+	else{
+		newPosition.x= 10000000;
+	}
+	gl_Position= newPosition;
+}
+
+
 void RocketFlare(){ //중력 설정 vec2(0.0,-4.9);
 //시작위치를 일정한 좌표로 설정하고, a_Position을 특정좌표
 // 이후 vx,vy,vz를 0,0.5,0 으로 하면 위로, 등 방향을 velocity로 정해주고
@@ -216,7 +280,18 @@ void Velocity()
 
 	if(t>0){
 		t= a_LifeTime* fract(t/a_LifeTime); //생존 주기 반복을 위한 필수 식.
-		newPosition.xy= newPosition.xy+ a_Velocity.xy *t;
+		float attractValue= fract(t/a_LifeTime);
+		float tt=t*t;
+		/*
+		newPosition.xy= newPosition.xy+ a_Velocity.xy *t+0.5*(c_2DGravity+u_WindAcc)*tt;
+		newPosition.xy= mix(newPosition.xy,u_AttractPos,attractValue); //작아지면서 움직임
+		*/
+		
+		vec2 trans= a_Velocity.xy *t+0.5*(c_2DGravity+u_WindAcc)*tt;
+		/*trans= mix(newPosition.xy,u_AttractPos,attractValue);
+		newPosition.xy= newPosition.xy+trans ;*/
+		newPosition.xy=mix(newPosition.xy,u_AttractPos,attractValue);
+		
 	}
 	else{
 		newPosition.x= 10000000;
@@ -234,5 +309,13 @@ void main()
 	//SinShape();
 	//RocketFlare();
 	//Fountain();
-	CircleEffect();
+	/*
+	if(a_StartTime>3.0f)
+		CircleEffect();
+	else
+		Fountain();
+		*/
+		Velocity();
+
+		HeartEffectCycle();
 }
