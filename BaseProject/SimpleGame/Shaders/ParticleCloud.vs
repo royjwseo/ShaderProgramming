@@ -4,11 +4,14 @@ in vec3 a_Position;
 in float a_StartTime;
 in vec3 a_Velocity;
 in float a_LifeTime;
+in float a_Amp;
+in float a_Period;
+in float a_Value;
 
 const vec3 c_StartPos=vec3(-1,0,0);
 const vec3 c_Velocity=vec3(2.0,0,0);
 const vec3 c_ParaVelocity=vec3(2.0,2.0,0);
-const vec2 c_2DGravity=vec2(0.0,-4.9);
+const vec2 c_2DGravity=vec2(0.0,-0.9);
 const float c_PI=3.141592;
 
 uniform float u_Time=0;
@@ -61,6 +64,138 @@ void Triangle(){
 
 }
 
+void SinShape(){//중력 설정 vec2(0.0,-4.9);
+	float t= u_Time-a_StartTime;
+	
+	//t= a_LifeTime* fract(t/a_LifeTime);
+	float amp=a_Amp;
+	float period=a_Period;
+
+	vec4 newPosition = vec4(a_Position,1);
+
+	if(t>0){
+		float tt=t*t;
+		t= a_LifeTime* fract(t/a_LifeTime); //생존 주기 반복을 위한 필수 식.
+		vec2 newVel = a_Velocity.xy+c_2DGravity*t;
+		vec2 newDir= vec2(-newVel.y,newVel.x);
+		newDir=normalize(newDir);
+		newPosition.xy= newPosition.xy+ a_Velocity.xy *t+0.5*c_2DGravity*tt;
+		newPosition.xy= newPosition.xy+newDir*(t*0.5)*sin(t*c_PI*period)*amp;
+	}
+	else{
+		newPosition.x= 10000000;
+	}
+	gl_Position= newPosition;
+}
+
+void CircleEffect(){
+	float t= u_Time-a_StartTime;
+	float amp=a_Amp;
+	float period=a_Period;
+	vec4 newPosition = vec4(a_Position,1);
+	//t= a_LifeTime* fract(t/a_LifeTime);
+	
+
+	if(t>0){
+	t= a_LifeTime* fract(t/a_LifeTime);	 //생존 주기 반복을 위한 필수 식.
+		float tt=t*t;
+	
+		float value= a_Value*2.0*c_PI;
+		float a= cos(value);
+		float b=sin(value);
+		newPosition.xy=newPosition.xy+vec2(a,b);
+
+		vec2 newVel = a_Velocity.xy+c_2DGravity*t;
+		vec2 newDir= vec2(-newVel.y,newVel.x);
+		newDir=normalize(newDir);
+		newPosition.xy= newPosition.xy+ a_Velocity.xy *t+0.5*c_2DGravity*tt;
+		newPosition.xy= newPosition.xy+newDir*(t*0.1)*sin(t*c_PI*period)*amp;
+	}
+	else{
+		newPosition.x= 10000000;
+	}
+	gl_Position= newPosition;
+}
+
+void RocketFlare(){ //중력 설정 vec2(0.0,-4.9);
+//시작위치를 일정한 좌표로 설정하고, a_Position을 특정좌표
+// 이후 vx,vy,vz를 0,0.5,0 으로 하면 위로, 등 방향을 velocity로 정해주고
+	/*float startTime =  8*((float)rand() / (float)RAND_MAX);
+		centerX = 0; //((float)rand() / (float)RAND_MAX) * 2.f - 1.f;
+		centerY = 0; //((float)rand() / (float)RAND_MAX) * 2.f - 1.f;
+		
+		vx = 0;
+		vy = 0.5;
+		vz =0;
+	
+		lifeTime =  8 * ((float)rand() / (float)RAND_MAX)+1;
+
+		amp = (((float)rand() / (float)RAND_MAX)-0.5f)*2.f;
+		period = ((float)rand() / (float)RAND_MAX);*/
+
+	float t= u_Time-a_StartTime;
+	
+	//t= a_LifeTime* fract(t/a_LifeTime);
+	float amp=a_Amp;
+	float period=a_Period;
+
+	vec4 newPosition = vec4(a_Position,1);
+
+	if(t>0){
+		
+		t= a_LifeTime* fract(t/a_LifeTime); //생존 주기 반복을 위한 필수 식.
+		vec2 newDir= vec2(-a_Velocity.y,a_Velocity.x);
+		newDir=normalize(newDir);
+		newPosition.xy= newPosition.xy+ a_Velocity.xy *t;
+		newPosition.xy= newPosition.xy+newDir*(t*0.5)*sin(t*c_PI*period)*amp;
+	}
+	else{
+		newPosition.x= 10000000;
+	}
+	gl_Position= newPosition;
+}
+
+void Fountain(){ //중력 설정 vec2(0.0,-4.9);
+	//시작위치를 일정한 좌표로 설정하고, a_Position을 특정좌표
+	// 이후 vx,vy,vz를 0,0.5,0 으로 하면 위로, 등 방향을 velocity로 정해주고
+	//한 점에서 퍼지도록 해야 분수효과
+
+	/*float startTime =  8*((float)rand() / (float)RAND_MAX);
+		centerX = 0; //((float)rand() / (float)RAND_MAX) * 2.f - 1.f;
+		centerY = 0; //((float)rand() / (float)RAND_MAX) * 2.f - 1.f;
+		
+		vx = ((float)rand() / (float)RAND_MAX) * 2.f - 1.f;
+		vy =  ((float)rand() / (float)RAND_MAX) * 2.f - 1.f+3.f;
+		vz = ((float)rand() / (float)RAND_MAX) * 2.f - 1.f;
+	
+		lifeTime =  8 * ((float)rand() / (float)RAND_MAX)+1;
+
+		amp = (((float)rand() / (float)RAND_MAX)-0.5f)*2.f;
+		period = ((float)rand() / (float)RAND_MAX);*/
+
+	float t= u_Time-a_StartTime;
+	
+	//t= a_LifeTime* fract(t/a_LifeTime);
+	float amp=a_Amp;
+	float period=a_Period;
+
+	vec4 newPosition = vec4(a_Position,1);
+
+	if(t>0){
+		
+		t= a_LifeTime* fract(t/a_LifeTime); //생존 주기 반복을 위한 필수 식.
+		float tt=t*t;
+		vec2 newVel= a_Velocity.xy+c_2DGravity*t;
+		vec2 newDir= vec2(-a_Velocity.y,a_Velocity.x);
+		newDir=normalize(newDir);
+		newPosition.xy= newPosition.xy+ a_Velocity.xy *t  + 0.5*c_2DGravity*tt;
+		newPosition.xy= newPosition.xy+newDir*(t*0.5)*sin(t*c_PI*period)*amp;
+	}
+	else{
+		newPosition.x= 10000000;
+	}
+	gl_Position= newPosition;
+}
 
 void Basic(){
 
@@ -95,5 +230,9 @@ void main()
 	//Circle();
 	//Parabola();
 	//Basic();
-	Velocity();
+	//Velocity();
+	//SinShape();
+	//RocketFlare();
+	//Fountain();
+	CircleEffect();
 }
