@@ -1,12 +1,16 @@
 #version 330
 
 in vec3 a_Position;
+//attribute vec3 a_Position; 둘중 하나
 in float a_StartTime;
 in vec3 a_Velocity;
 in float a_LifeTime;
 in float a_Amp;
 in float a_Period;
 in float a_Value;
+in vec4 a_Color;
+
+out vec4 v_Color;
 
 const vec3 c_StartPos=vec3(-1,0,0);
 const vec3 c_Velocity=vec3(2.0,0,0);
@@ -31,6 +35,7 @@ void Line(){
 
 
 	gl_Position = newPosition;
+	v_Color=a_Color;
 }
 
 void Circle(){
@@ -41,6 +46,7 @@ void Circle(){
 	newPosition.xy=a_Position.xy+trans;
 	newPosition.zw=vec2(0,1);
 	gl_Position=newPosition;
+	v_Color=a_Color;
 
 }
 
@@ -59,6 +65,7 @@ void Parabola(){
 	newPosition.xy=vec2(transX,transY);
 	newPosition.zw=vec2(0,1);
 	gl_Position=newPosition;
+	v_Color=a_Color;
 }
 
 void Triangle(){
@@ -88,6 +95,7 @@ void SinShape(){//중력 설정 vec2(0.0,-4.9);
 		newPosition.x= 10000000;
 	}
 	gl_Position= newPosition;
+	v_Color=a_Color;
 }
 
 void CircleEffect(){
@@ -117,6 +125,7 @@ void CircleEffect(){
 		newPosition.x= 10000000;
 	}
 	gl_Position= newPosition;
+	v_Color=a_Color;
 }
 
 void CircleEffectCycle(){
@@ -146,6 +155,7 @@ void CircleEffectCycle(){
 		newPosition.x= 10000000;
 	}
 	gl_Position= newPosition;
+v_Color=a_Color;
 }
 
 
@@ -156,9 +166,10 @@ void HeartEffectCycle(){
 	vec4 newPosition = vec4(a_Position,1);
 	//t= a_LifeTime* fract(t/a_LifeTime);
 	
-
+	
 	if(t>0){
-	t= a_LifeTime* fract(t/a_LifeTime);	 //생존 주기 반복을 위한 필수 식.
+	t= a_LifeTime* fract(t/a_LifeTime);	 //생존 주기 반복을 위한 필수 식. 0~LifeTime까지 반복
+	float particleAlpha= 1-t/a_LifeTime;
 		float tt=t*t;
 	
 		float value= a_StartTime*2.0*c_PI;
@@ -173,11 +184,15 @@ void HeartEffectCycle(){
 		newDir=normalize(newDir);
 		newPosition.xy= newPosition.xy+ a_Velocity.xy *t+0.5*c_2DGravity*tt;
 		newPosition.xy= newPosition.xy+newDir*(t*0.1)*sin(t*c_PI*period)*amp;
+		v_Color=vec4(a_Color.rgb,particleAlpha);
 	}
 	else{
 		newPosition.x= 10000000;
+		v_Color=a_Color;
 	}
 	gl_Position= newPosition;
+
+	
 }
 
 
@@ -217,6 +232,7 @@ void RocketFlare(){ //중력 설정 vec2(0.0,-4.9);
 		newPosition.x= 10000000;
 	}
 	gl_Position= newPosition;
+	v_Color=a_Color;
 }
 
 void Fountain(){ //중력 설정 vec2(0.0,-4.9);
@@ -259,6 +275,7 @@ void Fountain(){ //중력 설정 vec2(0.0,-4.9);
 		newPosition.x= 10000000;
 	}
 	gl_Position= newPosition;
+	v_Color=a_Color;
 }
 
 void Basic(){
@@ -266,7 +283,7 @@ void Basic(){
 	vec4 newPosition = vec4(a_Position.xy*a_StartTime,0,1);
 	
 	gl_Position=newPosition;
-
+	v_Color=a_Color;
 }
 
 void Velocity()
@@ -297,6 +314,7 @@ void Velocity()
 		newPosition.x= 10000000;
 	}
 	gl_Position= newPosition;
+	v_Color=a_Color;
 }
 
 void main()
@@ -314,8 +332,12 @@ void main()
 		CircleEffect();
 	else
 		Fountain();
-		*/
-		Velocity();
+	*/
+	//Velocity();
 
 		HeartEffectCycle();
+
+
+		
+
 }
