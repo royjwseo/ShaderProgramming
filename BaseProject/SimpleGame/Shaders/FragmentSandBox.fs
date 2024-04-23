@@ -79,7 +79,8 @@ void FlagEffect(){
 	if(sinValue<newTexPos.y+width&&sinValue>newTexPos.y-width){
 		FragColor=vec4(pow((sinValue+1)/2,3));
 	}else{
-		FragColor= vec4(0);
+		discard;
+		//FragColor= vec4(0);
 	}
 	
 }
