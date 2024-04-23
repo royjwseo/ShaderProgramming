@@ -18,6 +18,7 @@ public:
 	void DrawTest();
 	void DrawParticle();
 	void DrawParticleCloud();
+	void DrawFSSandBox();
 private:
 	void Initialize(int windowSizeX, int windowSizeY);
 	bool ReadFile(char* filename, std::string *target);
@@ -50,5 +51,9 @@ private:
 	GLuint m_ParticleCloudShader = 0;
 
 	GLuint m_SolidRectShader = 0;
+
+	GLuint m_FSSandBoxShader = 0;
+	GLuint m_FSSandBoxVBO = 0;
+	float m_FSSandBoxTime= 0;
 };
 

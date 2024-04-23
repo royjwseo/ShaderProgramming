@@ -21,6 +21,7 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 	m_SolidRectShader = CompileShaders("./Shaders/SolidRect.vs", "./Shaders/SolidRect.fs");
 	m_ParticleShader = CompileShaders("./Shaders/Particle.vs", "./Shaders/Particle.fs");
 	m_ParticleCloudShader = CompileShaders("./Shaders/ParticleCloud.vs", "./Shaders/ParticleCloud.fs");
+	m_FSSandBoxShader = CompileShaders("./Shaders/FragmentSandBox.vs", "./Shaders/FragmentSandBox.fs");
 	
 	//Create VBOs
 	CreateVertexBufferObjects();
@@ -82,6 +83,20 @@ void Renderer::CreateVertexBufferObjects()
 
 	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 	//glBindVertexArray(0);
+	
+	float size = 0.5;
+	float FSSandBoxVerts[] = { 
+	-size,-size,0,
+	size,size,0,
+	-size,size,0,
+	-size,-size,0,
+	size,-size,0,
+	size,size,0,
+	};
+
+	glGenBuffers(1, &m_FSSandBoxVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_FSSandBoxVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(FSSandBoxVerts), FSSandBoxVerts, GL_STATIC_DRAW);
 }
 
 
@@ -538,6 +553,40 @@ void Renderer::DrawParticleCloud()
 
 	glDisableVertexAttribArray(attribStartTime);
 	glDisable(GL_BLEND);
+
+}
+
+void Renderer::DrawFSSandBox()
+{
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//Program select
+	GLuint cur_Shader = m_FSSandBoxShader;
+	glUseProgram(cur_Shader);
+	GLuint stride = sizeof(float) * 3;
+
+	glUniform1f(glGetUniformLocation(cur_Shader, "u_Time"), m_FSSandBoxTime);
+	m_FSSandBoxTime += 0.016;
+
+	glUniform1f(glGetUniformLocation(cur_Shader, "u_Period"), 2.0);
+
+	
+
+	int attribPosition = glGetAttribLocation(cur_Shader, "a_Position");
+	glEnableVertexAttribArray(attribPosition);
+	glBindBuffer(GL_ARRAY_BUFFER, m_FSSandBoxVBO);
+	glVertexAttribPointer(attribPosition, 3, GL_FLOAT, GL_FALSE, stride, 0);
+
+
+
+	
+
+
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	glDisableVertexAttribArray(attribPosition);
+	//glDisable(GL_BLEND);
+
 
 }
 
