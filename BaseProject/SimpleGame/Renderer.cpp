@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Renderer.h"
+#include "LoadPng.h"
 
 Renderer::Renderer(int windowSizeX, int windowSizeY)
 {
@@ -23,12 +24,17 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 	m_ParticleCloudShader = CompileShaders("./Shaders/ParticleCloud.vs", "./Shaders/ParticleCloud.fs");
 	m_FSSandBoxShader = CompileShaders("./Shaders/FragmentSandBox.vs", "./Shaders/FragmentSandBox.fs");
 	m_GridMeshShader = CompileShaders("./Shaders/GridMesh.vs", "./Shaders/GridMesh.fs");
+	m_TextureSandBoxShader = CompileShaders("./Shaders/TextureSandBox.vs", "./Shaders/TextureSandBox.fs");
 	
 	//Create VBOs
 	CreateVertexBufferObjects();
 	CreateParticleVertexBufferObjects();
 	CreateParticleCloud(10000);
 	CreateGridMesh(32,32);
+
+	
+
+	m_RGBTexture = CreatePngTexture("./rgb.png", GL_NEAREST);
 
 	if (m_SolidRectShader > 0 && m_VBORect > 0)
 	{
@@ -39,6 +45,53 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 bool Renderer::IsInitialized()
 {
 	return m_Initialized;
+}
+
+
+GLuint Renderer::CreatePngTexture(char* filePath, GLuint samplingMethod)
+
+{
+
+	//Load Png
+
+	std::vector<unsigned char> image;
+
+	unsigned width, height;
+
+	unsigned error = lodepng::decode(image, width, height, filePath);
+
+	if (error != 0)
+
+	{
+
+		std::cout << "PNG image loading failed:" << filePath << std::endl;
+
+		assert(0);
+
+	}
+
+
+
+	GLuint temp;
+
+	glGenTextures(1, &temp);
+
+	glBindTexture(GL_TEXTURE_2D, temp);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
+
+		GL_UNSIGNED_BYTE, &image[0]);
+
+
+
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, samplingMethod);
+
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, samplingMethod);
+
+
+
+	return temp;
+
 }
 
 void Renderer::CreateVertexBufferObjects()
@@ -99,6 +152,22 @@ void Renderer::CreateVertexBufferObjects()
 	glGenBuffers(1, &m_FSSandBoxVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_FSSandBoxVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(FSSandBoxVerts), FSSandBoxVerts, GL_STATIC_DRAW);
+
+
+	//---------------------tex sandbox buffer
+	float Boxsize = 0.5;
+	float FSTextureSandBoxVerts[] = {
+	-Boxsize,-Boxsize,0, 0,1,
+	Boxsize,Boxsize,0,1,0,
+	-Boxsize,Boxsize,0,0,0,
+	-Boxsize,-Boxsize,0,0,1,
+	Boxsize,-Boxsize,0,1,1,
+	Boxsize,Boxsize,0,1,0
+	};
+
+	glGenBuffers(1, &m_TextureSandBoxVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_TextureSandBoxVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(FSTextureSandBoxVerts), FSTextureSandBoxVerts, GL_STATIC_DRAW);
 }
 
 
@@ -355,6 +424,9 @@ void Renderer::CreateParticleVertexBufferObjects()
 	
 	
 }
+
+
+
 
 
 void Renderer::AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType)
@@ -701,6 +773,45 @@ void Renderer::DrawGridMesh()
 	//glDisable(GL_BLEND);
 
 
+}
+
+void Renderer::DrawTextureSandBox()
+{
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//Program select
+	GLuint cur_Shader = m_TextureSandBoxShader;
+	glUseProgram(cur_Shader);
+	GLuint stride = sizeof(float) * 5;
+
+	glUniform1f(glGetUniformLocation(cur_Shader, "u_Time"), m_TextureSandBoxTime);
+	m_TextureSandBoxTime += 0.016;
+
+	glUniform1f(glGetUniformLocation(cur_Shader, "u_Period"), 2.0);
+
+
+
+	int attribPosition = glGetAttribLocation(cur_Shader, "a_Position");
+	glEnableVertexAttribArray(attribPosition);
+	glBindBuffer(GL_ARRAY_BUFFER, m_TextureSandBoxVBO);
+	glVertexAttribPointer(attribPosition, 3, GL_FLOAT, GL_FALSE, stride, 0);
+
+	int attribUv = glGetAttribLocation(cur_Shader, "a_TexPos");
+	glEnableVertexAttribArray(attribUv);
+	glBindBuffer(GL_ARRAY_BUFFER, m_TextureSandBoxVBO);
+	glVertexAttribPointer(attribUv, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid*)(sizeof(float)*3));
+
+	int uniformTex = glGetUniformLocation(cur_Shader, "uTexSampler");
+	glUniform1i(uniformTex, 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_RGBTexture);
+
+
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
+	//glDrawArrays(GL_TRIANGLES, 0, m_GridMeshVertexCount);
+
+	glDisableVertexAttribArray(attribPosition);
+	//glDisable(GL_BLEND);
 }
 
 void Renderer::GetGLPosition(float x, float y, float *newX, float *newY)

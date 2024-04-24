@@ -41,8 +41,8 @@ void Circles(){
 	float circleCount=10;
 	vec2 circleCenter= vec2(0.5,0.5);
 	float dist= distance(v_Color.xy,circleCenter);
-	float input= circleCount*c_PI*4*dist-u_Time  *10.0; //빈칸 채우기 ex.3개 그려라 //circleCount*c_PI*4*dist  (((-u_Time은 밖으로 , +u_Time은 안으로 들어오게 *10은 속도
-	float sinValue= pow(sin(input),16);
+	float inputs= circleCount*c_PI*4*dist-u_Time  *10.0; //빈칸 채우기 ex.3개 그려라 //circleCount*c_PI*4*dist  (((-u_Time은 밖으로 , +u_Time은 안으로 들어오게 *10은 속도
+	float sinValue= pow(sin(inputs),16);
 	FragColor=vec4(sinValue);
 
 }
