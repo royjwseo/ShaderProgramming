@@ -17,7 +17,7 @@ float tx= v_TexPos.x;
 
 void reflectY(){
 	float tx= v_TexPos.x;
-	float ty= 1-abs(v_TexPos.y-0.5)*2;
+	float ty= -abs(v_TexPos.y-0.5)*2+1;
 	vec2 newTexPos= vec2(tx,ty);
 
 	FragColor = texture(uTexSampler, newTexPos);
@@ -33,13 +33,29 @@ void reflectX(){
    if(FragColor.a<0.01)discard;
 }
 
+void REFLECT(){
+	
+	float tx= v_TexPos.x;
+	float ty= v_TexPos.y;
+	tx=tx*3;
+	ty=(ty+(tx-fract(tx)))/3.0;
+
+	
+	//ty= ty/3;
+	
+	
+	vec2 newTexPos= vec2(tx,ty);
+	FragColor= texture(uTexSampler,newTexPos);
+	
+}
+
 
 void main()
 {
 
 	//reflectX();
-	//reflectY();
-	p1();
+	reflectY();
+	//p1();
    //FragColor=vec4(1,1,1,1);
-
+   //REFLECT();
 }
