@@ -32,7 +32,16 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 	CreateParticleCloud(10000);
 	CreateGridMesh(32,32);
 
-	
+	for (int i = 0; i < 10; i++) {
+		std::string path = "./";
+		std::string index = std::to_string(i);
+		std::string form = ".png";
+
+		std::string full_path = path + index + form;
+		char* p = const_cast<char*>(full_path.data());
+		m_NumberTextures[i] = CreatePngTexture(p, GL_NEAREST);
+	}
+	m_NumbersTexture = CreatePngTexture("./numbers.png", GL_NEAREST);
 
 	m_RGBTexture = CreatePngTexture("./rgb.png", GL_NEAREST);
 
@@ -157,12 +166,13 @@ void Renderer::CreateVertexBufferObjects()
 	//---------------------tex sandbox buffer
 	float Boxsize = 0.5;
 	float FSTextureSandBoxVerts[] = {
+		-Boxsize,-Boxsize,0,0,1,
+	Boxsize,-Boxsize,0,1,1,
+	Boxsize,Boxsize,0,1,0,
 	-Boxsize,-Boxsize,0, 0,1,
 	Boxsize,Boxsize,0,1,0,
-	-Boxsize,Boxsize,0,0,0,
-	-Boxsize,-Boxsize,0,0,1,
-	Boxsize,-Boxsize,0,1,1,
-	Boxsize,Boxsize,0,1,0
+	-Boxsize,Boxsize,0,0,0
+	
 	};
 
 	glGenBuffers(1, &m_TextureSandBoxVBO);
@@ -774,6 +784,64 @@ void Renderer::DrawGridMesh()
 
 
 }
+
+void Renderer::DrawMultipleTextures() {
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//Program select
+	GLuint cur_Shader = m_TextureSandBoxShader;
+	glUseProgram(cur_Shader);
+	GLuint stride = sizeof(float) * 5;
+
+	glUniform1f(glGetUniformLocation(cur_Shader, "u_Time"), m_TextureSandBoxTime);
+	m_TextureSandBoxTime += 0.016;
+
+	glUniform1f(glGetUniformLocation(cur_Shader, "u_Period"), 2.0);
+
+
+
+	int attribPosition = glGetAttribLocation(cur_Shader, "a_Position");
+	glEnableVertexAttribArray(attribPosition);
+	glBindBuffer(GL_ARRAY_BUFFER, m_TextureSandBoxVBO);
+	glVertexAttribPointer(attribPosition, 3, GL_FLOAT, GL_FALSE, stride, 0);
+
+	int attribUv = glGetAttribLocation(cur_Shader, "a_TexPos");
+	glEnableVertexAttribArray(attribUv);
+	glBindBuffer(GL_ARRAY_BUFFER, m_TextureSandBoxVBO);
+	glVertexAttribPointer(attribUv, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid*)(sizeof(float) * 3));
+
+	int uniformTex = glGetUniformLocation(cur_Shader, "uTexSampler");
+	glUniform1i(uniformTex, 0);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_RGBTexture);
+
+
+	int uniformTex1 = glGetUniformLocation(cur_Shader, "u_NumberTexture");
+	int textures[] = { 1,2,3,4,5,6,7,8,9,10 };
+	glUniform1iv(uniformTex1,10, textures);
+
+
+	int uniformTex2 = glGetUniformLocation(cur_Shader, "u_NumbersTexture");
+	glUniform1i(uniformTex2, 11);
+
+
+
+	for (int i = 0; i < 10; i++) {
+		glActiveTexture(GL_TEXTURE1+i);
+		glBindTexture(GL_TEXTURE_2D, m_NumberTextures[i]);
+	}
+	glActiveTexture(GL_TEXTURE11);
+	glBindTexture(GL_TEXTURE_2D, m_NumbersTexture);
+
+
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
+	//glDrawArrays(GL_TRIANGLES, 0, m_GridMeshVertexCount);
+
+	glDisableVertexAttribArray(attribPosition);
+	//glDisable(GL_BLEND);
+}
+
 
 void Renderer::DrawTextureSandBox()
 {

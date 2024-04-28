@@ -23,6 +23,7 @@ public:
 	void DrawFSSandBox();
 	void DrawGridMesh();
 	void DrawTextureSandBox();
+	void DrawMultipleTextures();
 private:
 	GLuint CreatePngTexture(char* filePath, GLuint samplingMethod);
 	void Initialize(int windowSizeX, int windowSizeY);
@@ -79,5 +80,9 @@ private:
 	GLuint m_TextureSandBoxShader = 0;
 	GLuint m_TextureSandBoxVBO = 0;
 	float m_TextureSandBoxTime = 0;
+
+
+	GLuint m_NumberTextures[10];
+	GLuint m_NumbersTexture;
 };
 
