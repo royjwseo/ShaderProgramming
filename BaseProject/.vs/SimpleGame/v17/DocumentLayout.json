@@ -7,12 +7,12 @@
       "RelativeMoniker": "D:0:0:{25179D6C-FA85-4619-8EDB-AC241382F6CA}|SimpleGame\\SimpleGame.vcxproj|solutionrelative:SimpleGame\\Shaders\\TextureSandBox.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{25179D6C-FA85-4619-8EDB-AC241382F6CA}|SimpleGame\\SimpleGame.vcxproj|C:\\Users\\\uC131\uACF5\uC774\\Desktop\\ShaderProgramming\\BaseProject\\SimpleGame\\Renderer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{25179D6C-FA85-4619-8EDB-AC241382F6CA}|SimpleGame\\SimpleGame.vcxproj|solutionrelative:SimpleGame\\Renderer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{25179D6C-FA85-4619-8EDB-AC241382F6CA}|SimpleGame\\SimpleGame.vcxproj|C:\\Users\\\uC131\uACF5\uC774\\Desktop\\ShaderProgramming\\BaseProject\\SimpleGame\\SimpleGame.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{25179D6C-FA85-4619-8EDB-AC241382F6CA}|SimpleGame\\SimpleGame.vcxproj|solutionrelative:SimpleGame\\SimpleGame.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25179D6C-FA85-4619-8EDB-AC241382F6CA}|SimpleGame\\SimpleGame.vcxproj|C:\\Users\\\uC131\uACF5\uC774\\Desktop\\ShaderProgramming\\BaseProject\\SimpleGame\\Renderer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{25179D6C-FA85-4619-8EDB-AC241382F6CA}|SimpleGame\\SimpleGame.vcxproj|solutionrelative:SimpleGame\\Renderer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{25179D6C-FA85-4619-8EDB-AC241382F6CA}|SimpleGame\\SimpleGame.vcxproj|C:\\Users\\\uC131\uACF5\uC774\\Desktop\\ShaderProgramming\\BaseProject\\SimpleGame\\Shaders\\Particle.vs||{8B382828-6202-11D1-8870-0000F87579D2}",
@@ -68,22 +68,10 @@
               "RelativeDocumentMoniker": "SimpleGame\\Shaders\\TextureSandBox.fs",
               "ToolTip": "C:\\Users\\\uC131\uACF5\uC774\\Desktop\\ShaderProgramming\\BaseProject\\SimpleGame\\Shaders\\TextureSandBox.fs",
               "RelativeToolTip": "SimpleGame\\Shaders\\TextureSandBox.fs",
-              "ViewState": "AQIAADkAAAAAAAAAAAAAAFUAAAAAAAAA",
+              "ViewState": "AQIAAE4AAAAAAAAAAAAuwF0AAAA2AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2024-04-27T08:52:07.288Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "GridMesh.fs",
-              "DocumentMoniker": "C:\\Users\\\uC131\uACF5\uC774\\Desktop\\ShaderProgramming\\BaseProject\\SimpleGame\\Shaders\\GridMesh.fs",
-              "RelativeDocumentMoniker": "SimpleGame\\Shaders\\GridMesh.fs",
-              "ToolTip": "C:\\Users\\\uC131\uACF5\uC774\\Desktop\\ShaderProgramming\\BaseProject\\SimpleGame\\Shaders\\GridMesh.fs",
-              "RelativeToolTip": "SimpleGame\\Shaders\\GridMesh.fs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAZAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-04-23T11:53:57.318Z"
             },
             {
               "$type": "Document",
@@ -119,34 +107,45 @@
               "RelativeToolTip": "SimpleGame\\Renderer.h",
               "ViewState": "AQIAADMAAAAAAAAAAAAAAFQAAAAYAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-04-10T11:56:17.674Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-10T11:56:17.674Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Renderer.cpp",
               "DocumentMoniker": "C:\\Users\\\uC131\uACF5\uC774\\Desktop\\ShaderProgramming\\BaseProject\\SimpleGame\\Renderer.cpp",
               "RelativeDocumentMoniker": "SimpleGame\\Renderer.cpp",
               "ToolTip": "C:\\Users\\\uC131\uACF5\uC774\\Desktop\\ShaderProgramming\\BaseProject\\SimpleGame\\Renderer.cpp",
               "RelativeToolTip": "SimpleGame\\Renderer.cpp",
-              "ViewState": "AQIAACYDAAAAAAAAAAAAADYDAAAAAAAA",
+              "ViewState": "AQIAAA4AAAAAAAAAAAAAAB8AAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-04-10T11:56:17.736Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "SimpleGame.cpp",
               "DocumentMoniker": "C:\\Users\\\uC131\uACF5\uC774\\Desktop\\ShaderProgramming\\BaseProject\\SimpleGame\\SimpleGame.cpp",
               "RelativeDocumentMoniker": "SimpleGame\\SimpleGame.cpp",
               "ToolTip": "C:\\Users\\\uC131\uACF5\uC774\\Desktop\\ShaderProgramming\\BaseProject\\SimpleGame\\SimpleGame.cpp",
               "RelativeToolTip": "SimpleGame\\SimpleGame.cpp",
-              "ViewState": "AQIAAAMAAAAAAAAAAAAAACsAAAADAAAA",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAAACwAAAADAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-04-10T11:56:17.675Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "GridMesh.fs",
+              "DocumentMoniker": "C:\\Users\\\uC131\uACF5\uC774\\Desktop\\ShaderProgramming\\BaseProject\\SimpleGame\\Shaders\\GridMesh.fs",
+              "RelativeDocumentMoniker": "SimpleGame\\Shaders\\GridMesh.fs",
+              "ToolTip": "C:\\Users\\\uC131\uACF5\uC774\\Desktop\\ShaderProgramming\\BaseProject\\SimpleGame\\Shaders\\GridMesh.fs",
+              "RelativeToolTip": "SimpleGame\\Shaders\\GridMesh.fs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAZAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-04-23T11:53:57.318Z"
             },
             {
               "$type": "Document",
@@ -158,8 +157,7 @@
               "RelativeToolTip": "SimpleGame\\Shaders\\TextureSandBox.vs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-04-27T08:56:32.754Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-27T08:56:32.754Z"
             }
           ]
         }
@@ -180,8 +178,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Particle.vs",
+              "DocumentMoniker": "C:\\Users\\\uC131\uACF5\uC774\\Desktop\\ShaderProgramming\\BaseProject\\SimpleGame\\Shaders\\Particle.vs",
+              "RelativeDocumentMoniker": "SimpleGame\\Shaders\\Particle.vs",
+              "ToolTip": "C:\\Users\\\uC131\uACF5\uC774\\Desktop\\ShaderProgramming\\BaseProject\\SimpleGame\\Shaders\\Particle.vs",
+              "RelativeToolTip": "SimpleGame\\Shaders\\Particle.vs",
+              "ViewState": "AQIAAC0AAAAAAAAAAADwvzEAAAASAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-04-10T11:56:17.861Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 10,
@@ -205,19 +216,6 @@
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2024-04-10T11:56:17.858Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Particle.vs",
-              "DocumentMoniker": "C:\\Users\\\uC131\uACF5\uC774\\Desktop\\ShaderProgramming\\BaseProject\\SimpleGame\\Shaders\\Particle.vs",
-              "RelativeDocumentMoniker": "SimpleGame\\Shaders\\Particle.vs",
-              "ToolTip": "C:\\Users\\\uC131\uACF5\uC774\\Desktop\\ShaderProgramming\\BaseProject\\SimpleGame\\Shaders\\Particle.vs",
-              "RelativeToolTip": "SimpleGame\\Shaders\\Particle.vs",
-              "ViewState": "AQIAAC0AAAAAAAAAAADwvzEAAAASAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-04-10T11:56:17.861Z",
-              "EditorCaption": ""
             },
             {
               "$type": "Document",

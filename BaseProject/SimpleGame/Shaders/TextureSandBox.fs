@@ -87,6 +87,32 @@ vec2 newTexPos;
 	FragColor= texture(u_NumberTexture[texID],newTexPos);
 }
 
+
+void Final(){
+		
+     vec2 newTexPos;
+	 float tx=  0.5*(floor(v_TexPos.y*2)+1)+((v_TexPos.x*2.0));
+	float ty= fract(v_TexPos.y*2);
+	newTexPos=vec2(tx,ty);
+	
+    
+	FragColor=texture(uTexSampler,newTexPos);
+}
+
+void Final2(){
+		
+float padding=0.2;
+float countX=3;
+float countY=3;
+     vec2 newTexPos;
+	 float tx=  fract(padding*(floor(v_TexPos.y*countY)))+((v_TexPos.x*countX));
+	float ty= fract(v_TexPos.y*countY);
+	newTexPos=vec2(tx,ty);
+	
+    
+	FragColor=texture(uTexSampler,newTexPos);
+}
+
 void main()
 {
 
@@ -95,5 +121,6 @@ void main()
 	//p1();
    //FragColor=vec4(1,1,1,1);
    //REFLECT();
-   Multi();
+   //Multi();
+   Final();
 }
