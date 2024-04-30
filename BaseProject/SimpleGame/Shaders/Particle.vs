@@ -8,10 +8,7 @@ const vec3 c_ParaVelocity=vec3(2.0,2.0,0);
 const vec2 c_2DGravity=vec2(0.0,-4.9);
 const float c_PI=3.141592;
 
-const vec3 c_TriStartPos=vec3(-1,-0.95,0);
-const vec3 c_TriVelocity1=vec3(2,0,0);
-const vec3 c_TriVelocity2=vec3(-1,sqrt(3),0);
-const vec3 c_TriVelocity3=vec3(-1,-sqrt(3),0);
+
 
 uniform float u_Time=0;
 uniform float u_Period=2.0;
@@ -58,24 +55,26 @@ void Parabola(){
 	gl_Position=newPosition;
 }
 
+
+
+
 void Triangle() {
-    // 정수 부분 계산
-    float integerPart = abs(u_Time) - fract(abs(u_Time));
 	
-    float newTime = fract(u_Time);
-    float newTime2 =mod(u_Time, 3);
+	 const vec3 c_TriStartPos=vec3(-1,-0.95,0);
+	 const vec3 c_TriVelocity1=vec3(2,0,0);
+	 const vec3 c_TriVelocity2=vec3(-1,sqrt(3),0);
+	 const vec3 c_TriVelocity3=vec3(-1,-sqrt(3),0);
+    
+	float modTime=mod(u_Time,3.0);
+
+    float TimeOne = clamp(modTime,0.0,1.0);
+    float TimeTwo = clamp(modTime-1,0.0,1.0);
+    float TimeThree = clamp(modTime-2,0.0,1.0);
 	
-	vec3 r=c_TriVelocity1*newTime;
-	if(newTime2>=1.0){
-		r= c_TriVelocity1+c_TriVelocity2*newTime;
-	}
-	if(newTime2>=2.0){
-		r=c_TriVelocity1+c_TriVelocity2+c_TriVelocity3*newTime;
-	}
-	
+	vec3 FinalVelocity= c_TriVelocity1*TimeOne+ c_TriVelocity2*TimeTwo+ c_TriVelocity3*TimeThree;
 	vec4 newPosition;
 
-	newPosition.xyz=(c_TriStartPos+a_Position)+r;
+	newPosition.xyz=(c_TriStartPos+a_Position)+FinalVelocity;
 	newPosition.w=1;
     gl_Position = newPosition;
 }

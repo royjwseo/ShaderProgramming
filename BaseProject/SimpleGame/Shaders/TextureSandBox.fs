@@ -99,6 +99,17 @@ void Final(){
 	FragColor=texture(uTexSampler,newTexPos);
 }
 
+void Finalother(){
+		
+     vec2 newTexPos;
+	 float tx=  fract(v_TexPos.x*2);
+	float ty= -(floor(v_TexPos.x*2)*0.5)+((v_TexPos.y*2.0));;
+	newTexPos=vec2(tx,ty);
+	
+    
+	FragColor=texture(uTexSampler,newTexPos);
+}
+
 void Final2(){
 		
 float padding=0.2;
@@ -113,6 +124,34 @@ float countY=3;
 	FragColor=texture(uTexSampler,newTexPos);
 }
 
+
+void Prac(){
+
+	vec2 newPos;
+	float tx= v_TexPos.x;
+	float ty= -abs(v_TexPos.y*2-1)+1;
+
+	newPos=vec2(tx,ty);
+	
+    
+	FragColor=texture(uTexSampler,newPos);
+
+}
+
+
+
+void BGR2(){
+	vec2 newPos;
+	float tx= v_TexPos.x;
+	float ty= v_TexPos.y+((2-2*floor(v_TexPos.y*3))/3.0);
+
+	newPos=vec2(tx,ty);
+	
+    
+	FragColor=texture(uTexSampler,newPos);
+
+}
+
 void main()
 {
 
@@ -122,5 +161,6 @@ void main()
    //FragColor=vec4(1,1,1,1);
    //REFLECT();
    //Multi();
-   Final();
+  // Final();
+   Finalother();
 }

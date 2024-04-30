@@ -37,11 +37,11 @@ void RenderSceneTimer(int value)
 	// Renderer Test
 	//g_Renderer->DrawSolidRect(0, 0, 0, 4, 1, 0, 1, 1);
 	//g_Renderer->DrawTest();
-	//g_Renderer->DrawParticle();
+	g_Renderer->DrawParticle();
 	//g_Renderer->DrawParticleCloud();
 	//g_Renderer->DrawFSSandBox();
 	//g_Renderer->DrawGridMesh();
-	g_Renderer->DrawTextureSandBox();
+	//g_Renderer->DrawTextureSandBox();
 	//g_Renderer->DrawMultipleTextures();
 	glutSwapBuffers();
 	glutTimerFunc(16, RenderSceneTimer, 1);
