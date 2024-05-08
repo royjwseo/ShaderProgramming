@@ -25,12 +25,14 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 	m_FSSandBoxShader = CompileShaders("./Shaders/FragmentSandBox.vs", "./Shaders/FragmentSandBox.fs");
 	m_GridMeshShader = CompileShaders("./Shaders/GridMesh.vs", "./Shaders/GridMesh.fs");
 	m_TextureSandBoxShader = CompileShaders("./Shaders/TextureSandBox.vs", "./Shaders/TextureSandBox.fs");
+	m_TextureShader = CompileShaders("./Shaders/Texture.vs", "./Shaders/Texture.fs");
 	
 	//Create VBOs
 	CreateVertexBufferObjects();
 	CreateParticleVertexBufferObjects();
 	CreateParticleCloud(10000);
 	CreateGridMesh(32,32);
+	CreateFBOs();
 
 	for (int i = 0; i < 10; i++) {
 		std::string path = "./";
@@ -178,6 +180,28 @@ void Renderer::CreateVertexBufferObjects()
 	glGenBuffers(1, &m_TextureSandBoxVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_TextureSandBoxVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(FSTextureSandBoxVerts), FSTextureSandBoxVerts, GL_STATIC_DRAW);
+
+
+
+	
+	float FSTextureVerts[] = {
+	
+	-0,-0,0,
+	1,1,0,
+	-0,1,0,
+	-0,-0,0,
+	1,-0,0,
+	1,1,0
+	
+	
+	
+	
+
+	};
+
+	glGenBuffers(1, &m_TextureVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_TextureVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(FSTextureVerts), FSTextureVerts, GL_STATIC_DRAW);
 }
 
 
@@ -433,6 +457,42 @@ void Renderer::CreateParticleVertexBufferObjects()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 	
 	
+}
+
+void Renderer::CreateFBOs()
+{
+	GLuint temp;
+
+	glGenTextures(1, &m_FBOTexture_A);
+
+	glBindTexture(GL_TEXTURE_2D, m_FBOTexture_A);
+
+
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
+glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 512, 512, 0, GL_RGBA,GL_UNSIGNED_BYTE,0);
+
+
+GLuint depthBuffer;
+glGenRenderbuffers(1, &depthBuffer);
+glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
+glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 512, 512);
+glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+
+	
+glGenFramebuffers(1, &m_A_FBO);
+glBindFramebuffer(GL_FRAMEBUFFER, m_A_FBO);
+glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D, m_FBOTexture_A, 0);
+glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
+GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+if (status != GL_FRAMEBUFFER_COMPLETE) {
+	std::cout << "Gen FBO failed" << std::endl;
+}
+glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 
@@ -842,9 +902,31 @@ void Renderer::DrawMultipleTextures() {
 	//glDisable(GL_BLEND);
 }
 
+void Renderer::DrawTotal()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glBindFramebuffer(GL_FRAMEBUFFER, m_A_FBO);
+	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
+	glViewport(0, 0, m_WindowSizeX, m_WindowSizeY);
+	// Renderer Test
+	//DrawSolidRect(0, 0, 0, 4, 1, 0, 1, 1);
+	//DrawTest();
+	DrawParticle();
+	//DrawParticleCloud();
+	//DrawFSSandBox();
+	//DrawGridMesh();
+	
+	//DrawTextureSandBox();
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	DrawTexture(m_WindowSizeX/2, m_WindowSizeX/2, m_WindowSizeX/2, m_WindowSizeY/2, m_FBOTexture_A);
+	//g_Renderer->DrawMultipleTextures();
+}
+
 
 void Renderer::DrawTextureSandBox()
 {
+
 	//glEnable(GL_BLEND);
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	//Program select
@@ -880,6 +962,38 @@ void Renderer::DrawTextureSandBox()
 
 	glDisableVertexAttribArray(attribPosition);
 	//glDisable(GL_BLEND);
+}
+
+void Renderer::DrawTexture(float x, float y, float size_x, float size_y, GLuint TexId)
+{
+	GLuint cur_Shader = m_TextureShader;
+	glUseProgram(cur_Shader);
+	GLuint stride = sizeof(float) * 3;
+
+
+
+	int ulScreenRes = glGetUniformLocation(cur_Shader, "u_ScreenResol");
+	glUniform2f(ulScreenRes, (float)m_WindowSizeX,(float)m_WindowSizeY);
+	
+	int ulPosition = glGetUniformLocation(cur_Shader, "u_Position");
+	glUniform2f(ulPosition,x,y);
+
+	int ulSize = glGetUniformLocation(cur_Shader, "u_Size");
+	glUniform2f(ulSize, size_x, size_y);
+	
+	int uniformTex = glGetUniformLocation(cur_Shader, "u_Texure");
+	glUniform1i(uniformTex, 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, TexId);
+
+	int attribPosition = glGetAttribLocation(cur_Shader, "a_Position");
+	glEnableVertexAttribArray(attribPosition);
+	glBindBuffer(GL_ARRAY_BUFFER, m_TextureVBO);
+	glVertexAttribPointer(attribPosition, 3, GL_FLOAT, GL_FALSE, stride, 0);
+
+
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
+
 }
 
 void Renderer::GetGLPosition(float x, float y, float *newX, float *newY)

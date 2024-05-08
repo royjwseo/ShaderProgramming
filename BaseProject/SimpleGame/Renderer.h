@@ -23,7 +23,10 @@ public:
 	void DrawFSSandBox();
 	void DrawGridMesh();
 	void DrawTextureSandBox();
+	void DrawTexture(float x, float y, float size_x, float size_y,GLuint TexId);
 	void DrawMultipleTextures();
+
+	void DrawTotal();
 private:
 	GLuint CreatePngTexture(char* filePath, GLuint samplingMethod);
 	void Initialize(int windowSizeX, int windowSizeY);
@@ -33,7 +36,7 @@ private:
 	void CreateVertexBufferObjects();
 	void CreateParticleVertexBufferObjects();
 	
-
+	void CreateFBOs();
 
 
 	void GetGLPosition(float x, float y, float *newX, float *newY);
@@ -84,5 +87,11 @@ private:
 
 	GLuint m_NumberTextures[10];
 	GLuint m_NumbersTexture;
+
+	GLuint m_TextureShader = 0;
+	GLuint m_TextureVBO= 0;
+
+	GLuint m_FBOTexture_A;
+	GLuint m_A_FBO;
 };
 
