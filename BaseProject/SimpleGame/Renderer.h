@@ -92,6 +92,10 @@ private:
 	GLuint m_TextureVBO= 0;
 
 	GLuint m_FBOTexture_A;
+	GLuint m_FBOTexture_A1;
 	GLuint m_A_FBO;
+	GLuint m_ParticleTexture = 0;
+
+
 };
 

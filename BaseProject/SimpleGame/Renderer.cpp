@@ -46,6 +46,7 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 	m_NumbersTexture = CreatePngTexture("./numbers.png", GL_NEAREST);
 
 	m_RGBTexture = CreatePngTexture("./rgb.png", GL_NEAREST);
+	m_ParticleTexture = CreatePngTexture("./Twinkle.png", GL_NEAREST);
 
 	if (m_SolidRectShader > 0 && m_VBORect > 0)
 	{
@@ -210,11 +211,11 @@ void Renderer::CreateParticleCloud(int numParticles)
 	float centerX, centerY;
 	centerX = 0.f;
 	centerY = 0.f;
-	float size = 0.005f;
+	float size = 0.1f;
 	int particleCount = numParticles;
 	int verticesCount = particleCount * 6;
-	int floatCount = verticesCount * (3+1+3+1+1+1+1+4);
-	// x, y, z , startTime, velocity.xyz, lifetime, amp, period, value. colorR,G,B
+	int floatCount = verticesCount * (3+1+3+1+1+1+1+4+2);
+	// x, y, z , startTime, velocity.xyz, lifetime, amp, period, value. colorR,G,B,A ,tx,ty
 
 	float vx, vy, vz;
 	float lifeTime;
@@ -268,10 +269,12 @@ void Renderer::CreateParticleCloud(int numParticles)
 		vertices[index] = colorG; index++;
 		vertices[index] = colorB; index++;
 		vertices[index] = colorA; index++;
+		vertices[index] = 0; index++;
+		vertices[index] = 1; index++;
 
 
 		vertices[index] = centerX + size; index++;
-		vertices[index] = centerY + size;; index++;
+		vertices[index] = centerY - size;; index++;
 		vertices[index] = 0.f; index++;	
 		vertices[index] = startTime; index++;
 		vertices[index] = vx; index++;
@@ -285,8 +288,10 @@ void Renderer::CreateParticleCloud(int numParticles)
 		vertices[index] = colorG; index++;
 		vertices[index] = colorB; index++;
 		vertices[index] = colorA; index++;
+		vertices[index] = 1; index++;
+		vertices[index] = 1; index++;
 
-		vertices[index] = centerX - size;; index++;
+		vertices[index] = centerX + size;; index++;
 		vertices[index] = centerY + size;; index++;
 		vertices[index] = 0.f; index++; //tri 1
 		vertices[index] = startTime; index++;
@@ -301,6 +306,8 @@ void Renderer::CreateParticleCloud(int numParticles)
 		vertices[index] = colorG; index++;
 		vertices[index] = colorB; index++;
 		vertices[index] = colorA; index++;
+		vertices[index] = 1; index++;
+		vertices[index] = 0; index++;
 
 		vertices[index] = centerX - size; index++;
 		vertices[index] = centerY - size;; index++;
@@ -317,9 +324,11 @@ void Renderer::CreateParticleCloud(int numParticles)
 		vertices[index] = colorG; index++;
 		vertices[index] = colorB; index++;
 		vertices[index] = colorA; index++;
+		vertices[index] = 0; index++;
+		vertices[index] = 1; index++;
 
 		vertices[index] = centerX + size; index++;
-		vertices[index] = centerY - size;; index++;
+		vertices[index] = centerY + size;; index++;
 		vertices[index] = 0.f; index++;
 		vertices[index] = startTime; index++;
 		vertices[index] = vx; index++;
@@ -333,8 +342,10 @@ void Renderer::CreateParticleCloud(int numParticles)
 		vertices[index] = colorG; index++;
 		vertices[index] = colorB; index++;
 		vertices[index] = colorA; index++;
+		vertices[index] = 1; index++;
+		vertices[index] = 0; index++;
 
-		vertices[index] = centerX + size;; index++;
+		vertices[index] = centerX - size;; index++;
 		vertices[index] = centerY + size;; index++;
 		vertices[index] = 0.f; index++; //tri 2
 		vertices[index] = startTime; index++;
@@ -349,6 +360,8 @@ void Renderer::CreateParticleCloud(int numParticles)
 		vertices[index] = colorG; index++;
 		vertices[index] = colorB; index++;
 		vertices[index] = colorA; index++;
+		vertices[index] = 0; index++;
+		vertices[index] = 0; index++;
 
 	}
 
@@ -473,7 +486,16 @@ void Renderer::CreateFBOs()
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
-glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 512, 512, 0, GL_RGBA,GL_UNSIGNED_BYTE,0);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 512, 512, 0, GL_RGBA,GL_UNSIGNED_BYTE,0);
+
+	glGenTextures(1, &m_FBOTexture_A1);
+	glBindTexture(GL_TEXTURE_2D, m_FBOTexture_A1);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
+glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 512, 512, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 
 
 GLuint depthBuffer;
@@ -487,6 +509,8 @@ glBindRenderbuffer(GL_RENDERBUFFER, 0);
 glGenFramebuffers(1, &m_A_FBO);
 glBindFramebuffer(GL_FRAMEBUFFER, m_A_FBO);
 glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D, m_FBOTexture_A, 0);
+
+glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_FBOTexture_A1, 0);
 glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
 GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 if (status != GL_FRAMEBUFFER_COMPLETE) {
@@ -714,7 +738,7 @@ void Renderer::DrawParticleCloud()
 	//Program select
 	GLuint cur_Shader = m_ParticleCloudShader;
 	glUseProgram(cur_Shader);
-	GLuint stride = sizeof(float) * 15;
+	GLuint stride = sizeof(float) * 17;
 
 	glUniform1f(glGetUniformLocation(cur_Shader, "u_Time"), m_ParticleTime);
 	m_ParticleTime += 0.016;
@@ -726,6 +750,11 @@ void Renderer::DrawParticleCloud()
 
 	glUniform2f(glGetUniformLocation(cur_Shader, "u_AttractPos"), 0, 0.0);
 	//glUniform3f(glGetUniformLocation(cur_Shader, "c_Velocity"), 0.001,0,0);
+
+	int uniformTex = glGetUniformLocation(cur_Shader, "u_Texture");
+	glUniform1i(uniformTex, 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_ParticleTexture);
 
 
 	int attribPosition = glGetAttribLocation(cur_Shader, "a_Position");
@@ -771,6 +800,10 @@ void Renderer::DrawParticleCloud()
 	glBindBuffer(GL_ARRAY_BUFFER, m_ParticleCloudVBO);
 	glVertexAttribPointer(attribColor, 4, GL_FLOAT, GL_FALSE, stride, (GLvoid*)(sizeof(float) * 11));
 
+	int attribTexPos = glGetAttribLocation(cur_Shader, "a_TexPos");
+	glEnableVertexAttribArray(attribTexPos);
+	glBindBuffer(GL_ARRAY_BUFFER, m_ParticleCloudVBO);
+	glVertexAttribPointer(attribTexPos, 2, GL_FLOAT, GL_FALSE, stride, (GLvoid*)(sizeof(float) * 15));
 
 
 	glDrawArrays(GL_TRIANGLES, 0, m_ParticleCloudVertexCount);
@@ -906,21 +939,35 @@ void Renderer::DrawTotal()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glBindFramebuffer(GL_FRAMEBUFFER, m_A_FBO);
-	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
-	glViewport(0, 0, m_WindowSizeX, m_WindowSizeY);
-	// Renderer Test
-	//DrawSolidRect(0, 0, 0, 4, 1, 0, 1, 1);
-	//DrawTest();
-	DrawParticle();
-	//DrawParticleCloud();
-	//DrawFSSandBox();
-	//DrawGridMesh();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	GLenum DrawBuffers[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+	glDrawBuffers(2, DrawBuffers);
 	
-	//DrawTextureSandBox();
+	DrawParticleCloud();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	DrawTexture(0,0, m_WindowSizeX / 2, m_WindowSizeY / 2, m_FBOTexture_A);
+	DrawTexture(0, 0, m_WindowSizeX , m_WindowSizeY , m_FBOTexture_A1);
 
-	DrawTexture(m_WindowSizeX/2, m_WindowSizeX/2, m_WindowSizeX/2, m_WindowSizeY/2, m_FBOTexture_A);
-	//g_Renderer->DrawMultipleTextures();
+
+
+	//glBindFramebuffer(GL_FRAMEBUFFER, m_A_FBO);
+	//glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
+	//glViewport(0, 0, m_WindowSizeX, m_WindowSizeY);
+	//// Renderer Test
+	////DrawSolidRect(0, 0, 0, 4, 1, 0, 1, 1);
+	////DrawTest();
+	////DrawParticle();
+	////DrawParticleCloud();
+	////DrawFSSandBox();
+	////DrawGridMesh();
+	//
+	////DrawTextureSandBox();
+	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	//DrawTexture(m_WindowSizeX/2, m_WindowSizeX/2, m_WindowSizeX/2, m_WindowSizeY/2, m_FBOTexture_A);
+	////g_Renderer->DrawMultipleTextures();
+
+
 }
 
 

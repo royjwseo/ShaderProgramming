@@ -1,1 +1,17 @@
-﻿  SimpleGame.vcxproj -> C:\Users\서정원\Desktop\셰이더 프로그래밍\Shader Programming Project\BaseProject\x64\Debug\SimpleGame.exe
+﻿  Renderer.cpp
+C:\Users\서정원\Desktop\셰이더 프로그래밍\Shader Programming Project\BaseProject\SimpleGame\Renderer.cpp(99,56): warning C4244: '인수': 'GLuint'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\서정원\Desktop\셰이더 프로그래밍\Shader Programming Project\BaseProject\SimpleGame\Renderer.cpp(101,56): warning C4244: '인수': 'GLuint'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\서정원\Desktop\셰이더 프로그래밍\Shader Programming Project\BaseProject\SimpleGame\Renderer.cpp(460,19): warning C4305: '초기화 중': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\서정원\Desktop\셰이더 프로그래밍\Shader Programming Project\BaseProject\SimpleGame\Renderer.cpp(477,9): warning C4101: 'temp' :참조되지 않은 지역 변수입니다.
+C:\Users\서정원\Desktop\셰이더 프로그래밍\Shader Programming Project\BaseProject\SimpleGame\Renderer.cpp(538,34): warning C4267: '=': 'size_t'에서 'GLint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\서정원\Desktop\셰이더 프로그래밍\Shader Programming Project\BaseProject\SimpleGame\Renderer.cpp(707,25): warning C4305: '+=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\서정원\Desktop\셰이더 프로그래밍\Shader Programming Project\BaseProject\SimpleGame\Renderer.cpp(744,25): warning C4305: '+=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\서정원\Desktop\셰이더 프로그래밍\Shader Programming Project\BaseProject\SimpleGame\Renderer.cpp(826,26): warning C4305: '+=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\서정원\Desktop\셰이더 프로그래밍\Shader Programming Project\BaseProject\SimpleGame\Renderer.cpp(861,27): warning C4305: '+=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\서정원\Desktop\셰이더 프로그래밍\Shader Programming Project\BaseProject\SimpleGame\Renderer.cpp(890,31): warning C4305: '+=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\서정원\Desktop\셰이더 프로그래밍\Shader Programming Project\BaseProject\SimpleGame\Renderer.cpp(948,52): warning C4244: '인수': 'unsigned int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\서정원\Desktop\셰이더 프로그래밍\Shader Programming Project\BaseProject\SimpleGame\Renderer.cpp(948,33): warning C4244: '인수': 'unsigned int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\서정원\Desktop\셰이더 프로그래밍\Shader Programming Project\BaseProject\SimpleGame\Renderer.cpp(949,36): warning C4244: '인수': 'unsigned int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\서정원\Desktop\셰이더 프로그래밍\Shader Programming Project\BaseProject\SimpleGame\Renderer.cpp(949,20): warning C4244: '인수': 'unsigned int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\서정원\Desktop\셰이더 프로그래밍\Shader Programming Project\BaseProject\SimpleGame\Renderer.cpp(985,31): warning C4305: '+=': 'double'에서 'float'(으)로 잘립니다.
+  SimpleGame.vcxproj -> C:\Users\서정원\Desktop\셰이더 프로그래밍\Shader Programming Project\BaseProject\x64\Debug\SimpleGame.exe

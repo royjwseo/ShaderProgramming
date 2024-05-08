@@ -9,7 +9,9 @@ in float a_Amp;
 in float a_Period;
 in float a_Value;
 in vec4 a_Color;
+in vec2 a_TexPos;
 
+out vec2 v_TexPos;
 out vec4 v_Color;
 
 const vec3 c_StartPos=vec3(-1,0,0);
@@ -338,6 +340,6 @@ void main()
 		HeartEffectCycle();
 
 
-		
+		v_TexPos=a_TexPos;
 
 }
